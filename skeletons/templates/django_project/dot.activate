@@ -1,0 +1,5 @@
+BASE=`pwd`
+source ~/.bashrc
+source $BASE/env/bin/activate
+export CDPATH=".:$BASE/.cdpath"
+

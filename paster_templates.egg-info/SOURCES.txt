@@ -1,0 +1,12 @@
+setup.cfg
+setup.py
+paster_templates.egg-info/PKG-INFO
+paster_templates.egg-info/SOURCES.txt
+paster_templates.egg-info/dependency_links.txt
+paster_templates.egg-info/entry_points.txt
+paster_templates.egg-info/not-zip-safe
+paster_templates.egg-info/requires.txt
+paster_templates.egg-info/top_level.txt
+skeletons/__init__.py
+skeletons/django_project.py
+skeletons/update_env.py

@@ -1,0 +1,13 @@
+Metadata-Version: 1.0
+Name: paster-templates
+Version: 0.1dev
+Summary: PasteScript templates.
+Home-page: UNKNOWN
+Author: Juraj Pelikan
+Author-email: juraj.pelikan@gmail.com
+License: GPL
+Description: PasteScript templates.
+Keywords: paste templates django
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

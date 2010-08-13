@@ -1,0 +1,6 @@
+ipython
+MySQL-python
+PIL
+-e svn+http://code.djangoproject.com/svn/django/tags/releases/1.2.1#egg=django
+-e git+http://github.com/django-extensions/django-extensions.git#egg=django-extensions
+-e git+http://github.com/robhudson/django-debug-toolbar.git#egg=django-debug-toolbar

@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+
+import os
+
+from string import Template
+
+
+from optparse import OptionParser
+
+def get_project_name():
+    """
+    Return project name determined from path.
+    """
+    return os.path.abspath(__file__).split('/')[-3]
+
+def get_project_root():
+    """
+    Return project root determined from path.
+    """
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+def parse_command_line():
+    """
+    Examines command line options and does preliminary checking.
+    """
+    project_name = get_project_name()
+
+    parser = OptionParser("update_env [options]")
+    parser.add_option(
+        "--server_name",
+        action="store",
+        dest="server_name",
+        default=project_name,
+        help="Apache conf: ServerName; Default: %s" % project_name)
+
+    parser.add_option(
+        "--user",
+        action="store",
+        dest="user",
+        default=os.environ.get('USER'),
+        help="Apache conf: WSGI process user; Default: %s." % os.environ.get('USER'))
+
+    parser.add_option(
+        "--group",
+        action="store",
+        dest="group",
+        default=os.environ.get('USER'),
+        help="Apache conf: WSGI process user; Default: %s." % os.environ.get('USER'))
+
+    return parser.parse_args()
+
+
+def update_apache_conf(options):
+    """
+    This updates/create apache configuration.
+    """
+    if not options.get('project_root', None):
+        options['project_root'] = get_project_root()
+        
+    project_name = get_project_name()
+    config_path = os.path.join(get_project_root(), 'config')
+    _file = open(os.path.join(config_path, 'apache-conf.template'))
+    template = Template(_file.read())
+    _file.close()
+
+    _file = open(os.path.join(config_path, "%s.conf" % project_name), 'w')
+    print >> _file, template.substitute(options)
+    _file.close()
+
+
+
+def update_installed_packages():
+    """
+    This updates/installs installed packages in virtualenv from pip_requirements.txt
+    """
+    _bin = os.path.join(output_dir, "env", "bin")
+    _python = os.path.join(_bin , "python")
+    _easy_install = os.path.join(_bin , "easy_install")
+    _pip = os.path.join(_bin , "pip")
+
+    subprocess.call([_easy_install, "pip"])
+    subprocess.call([_pip, "install", "-r",
+                     os.path.join(output_dir, "config", "pip_requirements.txt")])
+
+def update_virtualenv():
+    """
+    This updates/create virtualenv 
+    """
+    subprocess.call(["virtualenv", "--no-site-packages", os.path.join(output_dir, "env")])
+
+
+def update_all(options):
+    """
+    This updates all.
+    """
+    update_virtualenv()
+    update_apache_conf(options)
+    update_installed_packages()
+    
+def main():
+    """
+    Called from command line.
+    """
+    options, args = parse_command_line() 
+    update_all(options.__dict__)
+    
+if __name__ == '__main__':
+    main()
+    

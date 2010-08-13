@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+	ServerName $server_name
+	ServerAlias www.$server_name
+	LogLevel warn
+
+	DocumentRoot $project_root/static/
+
+	Alias /robots.txt $project_root/static/robots.txt
+	Alias /favicon.ico $project_root/static/favicon.ico
+	Alias /media/ $project_root/static/media/
+	Alias /admin-media/ $project_root/static/admin-media/
+
+	<Directory $project_root/static>
+		Order deny,allow
+		Allow from all
+	</Directory>
+	WSGIDaemonProcess $server_name user=$user group=$group processes=2 maximum-requests=500 threads=1
+	WSGIProcessGroup $server_name
+	WSGIScriptAlias / $project_root/apache/django.wsgi
+
+</VirtualHost>
