@@ -16,6 +16,6 @@
 	</Directory>
 	WSGIDaemonProcess $server_name user=$user group=$group processes=2 maximum-requests=500 threads=1
 	WSGIProcessGroup $server_name
-	WSGIScriptAlias / $project_root/apache/django.wsgi
+	WSGIScriptAlias / $project_root/scripts/django.wsgi
 
 </VirtualHost>

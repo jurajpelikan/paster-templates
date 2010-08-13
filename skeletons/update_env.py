@@ -58,7 +58,8 @@ def update_apache_conf(options, project_root, project_name):
     This updates/create apache configuration.
     """
     options['project_root'] = project_root
-    options['server_name'] = project_name
+    if not options.get('server_name', None):
+        options['server_name'] = project_name
     if not options.get('user', None):
         options['user'] = os.environ.get('USER')
     if not options.get('group', None):
@@ -69,7 +70,7 @@ def update_apache_conf(options, project_root, project_name):
     template = Template(_file.read())
     _file.close()
 
-    _file = open(os.path.join(config_path, "%s.conf" % project_name), 'w')
+    _file = open(os.path.join(config_path, "%s.conf" % options['server_name']), 'w')
     print >> _file, template.substitute(options)
     _file.close()
 
