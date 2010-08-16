@@ -1,5 +1,12 @@
-BASE=`pwd`
 source ~/.bashrc
-source $BASE/env/bin/activate
-export CDPATH=".:$BASE/.cdpath"
+if [ ! $ENV_BASE ] ; then
+    ENV_BASE=`pwd`
+fi
 
+eval ENV_BASE=${ENV_BASE%/}
+
+cd $ENV_BASE
+
+source $ENV_BASE/env/bin/activate
+export CDPATH=".:$ENV_BASE/.cdpath"
+export PYTHONPATH=$ENV_BASE/project
