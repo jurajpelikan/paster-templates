@@ -4,11 +4,8 @@ Paster template for django projects.
 import os
 import subprocess
 import glob
-import shutil
-import stat
 
-from paste.script.templates import Template, var
-from update_env import update_all
+from paste.script.templates import Template
 
 
 class DjangoProjectTemplate(Template):
@@ -36,21 +33,24 @@ class DjangoProjectTemplate(Template):
         _django_admin = os.path.abspath(os.path.join(_bin, 'django-admin.py'))
         _project_root = os.path.abspath(output_dir)
 
-        update_all(variables, output_dir, variables['project'])
+        # update_all(variables, output_dir, variables['project'])
         os.chdir(_static)
         if not os.path.exists('admin-media'):
             os.symlink('../env/src/django/django/contrib/admin/media', 'admin-media')
         os.chdir(_project_root)
+
         subprocess.call([
-            _django_admin, "startproject", "project"
+            "virtualenv", "--no-site-packages",
+            os.path.join(_project_root, "env")
             ])
+
+        # if not os.path.exists('project'):
+        #     subprocess.call([
+        #         _django_admin, "startproject", "project"
+        #         ])
     
         # rename dot files
         for dot_file in glob.glob(os.path.join(_project_root, 'dot.*')):
-            os.rename(dot_file, dot_file.replace('/dot', '/')) 
+            if not os.path.exists(dot_file.replace('/dot', '/')):
+                os.rename(dot_file, dot_file.replace('/dot', '/')) 
                                   
-        # copy update_env script
-        _update_env = os.path.join(_bin, 'update_env')
-        _update_env_py = os.path.join(os.path.dirname(__file__), 'update_env.py')
-        shutil.copyfile(_update_env_py, _update_env)
-        subprocess.call(['chmod', '755', _update_env])

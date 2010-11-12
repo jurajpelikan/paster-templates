@@ -1,0 +1,33 @@
+[program:$hostname-celerybeat]
+command=$python $manage celerybeat  -S djcelery.schedulers.DatabaseScheduler
+user=$user
+stdout_logfile=$log/celery-beat.log
+stderr_logfile=$log/celery-beat.log
+autostart=true
+autorestart=true
+startsecs=10
+
+
+[program:$hostname-celerycam]
+command=$python $manage celerycam -F 10.0
+user=$user
+stdout_logfile=$log/celery-cam.log
+stderr_logfile=$log/celery-cam.log
+autostart=true
+autorestart=true
+startsecs=10
+
+
+[program:$hostname-celeryd]
+command=$python $manage celeryd -E -c $workers
+directory=$django_project_root
+numprocs=1
+stdout_logfile=$log/celeryd.log
+stderr_logfile=$log/log/celeryd.log
+user=$user
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs = 600
+
+
