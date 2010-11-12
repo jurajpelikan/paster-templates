@@ -89,7 +89,7 @@ def supervisor_celery_conf(hostname=None, user=None, group=None, workers=2):
     options['config_path'] = os.path.join(options['project_root'], 'config')
     options['python'] = os.path.join(options['project_root'], 'env', 'bin', 'python')
     options['manage'] = os.path.join(options['project_root'], 'project', 'manage.py')
-    options['log'] = os.path.join(options['project_root'], 'log')
+    options['log'] = os.path.join(options['project_root'], 'logs')
     
     _file = open(os.path.join(
         options['config_path'], 'supervisor-celery.conf.template'))
